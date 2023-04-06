@@ -37,6 +37,9 @@ impl Vec3 {
     pub fn new(x: f64, y: f64, z: f64) -> Vec3 {
         Vec3 {x, y, z}
     }
+    pub fn new_from_tuple(a: (f64, f64, f64)) -> Vec3 {
+        Vec3 { x: a.0, y: a.1, z: a.2 }
+    }
     pub fn magnatude(&self) -> f64 {
         return (self.x*self.x+self.y*self.y+self.z*self.z).sqrt()
     }
@@ -271,6 +274,97 @@ impl ops::Mul<isize> for Vec3 {
         Vec3::new(self.x * scaler as f64, self.y * scaler as f64, self.z * scaler as f64)
     }
 }
+impl ops::Mul<(u8, u8, u8)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (u8, u8, u8)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(u16, u16, u16)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (u16, u16, u16)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(u32, u32, u32)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (u32, u32, u32)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(u64, u64, u64)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (u64, u64, u64)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(u128, u128, u128)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (u128, u128, u128)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(i8, i8, i8)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (i8, i8, i8)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(i16, i16, i16)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (i16, i16, i16)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(i32, i32, i32)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (i32, i32, i32)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(i64, i64, i64)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (i64, i64, i64)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(i128, i128, i128)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (i128, i128, i128)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(f32, f32, f32)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (f32, f32, f32)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(usize, usize, usize)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (usize, usize, usize)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
+impl ops::Mul<(isize, isize, isize)> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, scaler: (isize, isize, isize)) -> Vec3{
+        Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.1 as f64)
+    }
+}
 impl ops::Div<f64> for Vec3 {
     type Output = Vec3;
     fn div(self, scaler: f64) -> Vec3{
@@ -353,5 +447,89 @@ impl ops::Div<isize> for Vec3 {
     type Output = Vec3;
     fn div(self, scaler: isize) -> Vec3{
         Vec3::new(self.x / scaler as f64, self.y / scaler as f64, self.z / scaler as f64)
+    }
+}
+impl ops::Div<(u8, u8, u8)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (u8, u8, u8)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(u16, u16, u16)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (u16, u16, u16)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(u32, u32, u32)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (u32, u32, u32)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(u64, u64, u64)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (u64, u64, u64)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(u128, u128, u128)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (u128, u128, u128)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(i8, i8, i8)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (i8, i8, i8)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(i16, i16, i16)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (i16, i16, i16)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(i32, i32, i32)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (i32, i32, i32)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(i64, i64, i64)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (i64, i64, i64)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(i128, i128, i128)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (i128, i128, i128)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(f32, f32, f32)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (f32, f32, f32)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(f64, f64, f64)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (f64, f64, f64)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(usize, usize, usize)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (usize, usize, usize)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
+    }
+}
+impl ops::Div<(isize, isize, isize)> for Vec3 {
+    type Output = Vec3;
+    fn div(self, scaler: (isize, isize, isize)) -> Vec3{
+        Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.2 as f64)
     }
 }
