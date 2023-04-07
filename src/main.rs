@@ -19,4 +19,6 @@ fn main() {
     let test_vec = Vec3::new(1.0, 2.0, 0.0);
     let second_test = Vec3::new(4.0, 5.0, 0.0);
     println!("\nA: {}\nB: {}\nAxB: {}", &test_vec, &second_test, test_vec.cross(second_test.clone()));
+    let test_vec = Vec3::new(1.0, 2.0, 6.5);
+    println!("\nA: {}\nA*3 = B\nB = {}", &test_vec, test_vec.clone() * 3);
 }
