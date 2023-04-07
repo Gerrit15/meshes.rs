@@ -1,29 +1,3 @@
-//this is a struct that holds a vector of x,y,z f64 numbers. 
-//It is designed to not be mutable, all methods will return a new Vec3 or appropriate data type <-- subject to change, some day
-//It impliments adding, subtracting Vec3, and will produce a dot product in the form of f64 upon
-//being used to multiply.
-//It supports scaling by every number in the standard library I could think of
-//It has 5 associated methods:
-//   - rotate_x(theta)
-//   - rotate_y(theta)
-//   - rotate_z(theta)
-//   - normalize()
-//   - magnatude()
-//   - cross(B)
-//
-//The rotate set of methods will rotate the vector around their indicated axis by theta degrees. 
-//While radians are *clearly* superior, they also have the disatvantage of being decimals
-//(especially when you include pi) so it felt more suitable to use degrees, which are only
-//sometimes decimals and can be represented more directly then radians
-//
-//The normalize() method will return a normalized vector, meaning that the x, y, and z components
-//will be divided by the magnatude of the vector, so that it rests inside the unit circle.
-//
-//The magnatude() method is quite simple, it's an extension of pythagorean theorem into three
-//dimensions, and returns a f64 
-//
-//The cross() method returns the cross product of itself and B. I will not be elaborating on how it
-//works, because I in fact do not 100% understand how it works. 
 use std::ops;
 use std::fmt;
 #[derive(Clone)]
@@ -33,20 +7,21 @@ pub struct Vec3 {
     pub z: f64,
 }
 
+
 impl Vec3 {
     pub fn new(x: f64, y: f64, z: f64) -> Vec3 {
         Vec3 {x, y, z}
-    }
-    pub fn new_from_tuple(a: (f64, f64, f64)) -> Vec3 {
-        Vec3 { x: a.0, y: a.1, z: a.2 }
     }
     pub fn magnatude(&self) -> f64 {
         return (self.x*self.x+self.y*self.y+self.z*self.z).sqrt()
     }
     pub fn normalize(&self) -> Vec3 {
-        let magnatude = self.magnatude();
-        return self.clone()/magnatude
+        return self.clone()/self.magnatude()
     }
+
+    //these functions use degrees because while radians are superior, 
+    //degrees are represented with less sig figs
+
     /*
     * [  1       0           0       ]
     * [  0  cos(theta)  -sin(theta)  ]
@@ -142,13 +117,17 @@ impl Vec3 {
         let z_prime = self.x*b.y - self.y*b.x;
         Vec3::new(x_prime, y_prime, z_prime)
     }
+    pub fn reflect(&self, n: Vec3) -> Vec3{
+        // d' = d -2(d*n)n
+        self.clone() + (-2.0 * (self.clone() * n.clone()))*n.clone()
+    }
 }
 
 impl ops::Add<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn add(self, translation: Vec3) -> Vec3{
-        Vec3::new(self.x + translation.x , self.y + translation.y, self.z + translation.y)
+        Vec3::new(self.x + translation.x , self.y + translation.y, self.z + translation.z)
     }
 }
 impl ops::Sub<Vec3> for Vec3 {
@@ -186,6 +165,13 @@ macro_rules! impl_muli_divi {
                     Vec3::new(self.x * scaler as f64, self.y * scaler as f64, self.z * scaler as f64)
                 }
             }
+            impl ops::Mul<Vec3> for $typ{
+                type Output = Vec3;
+
+                fn mul(self, vec: Vec3) -> Vec3{
+                    Vec3::new(vec.x * self as f64, vec.y * self as f64, vec.z * self as f64)
+                }
+            }
             impl ops::Div<$typ> for Vec3{
                 type Output = Vec3;
 
@@ -193,11 +179,72 @@ macro_rules! impl_muli_divi {
                     Vec3::new(self.x / scaler as f64, self.y / scaler as f64, self.z / scaler as f64)
                 }
             }
+            impl ops::Div<Vec3> for $typ{
+                type Output = Vec3;
+
+                fn div(self, vec: Vec3) -> Vec3{
+                    Vec3::new(vec.x / self as f64, vec.y / self as f64, vec.z / self as f64)
+                }
+            }
+            impl ops::MulAssign<$typ> for Vec3{
+                fn mul_assign(&mut self, scaler: $typ) {
+                    *self = Vec3 {
+                        x: self.x * scaler as f64,
+                        y: self.y * scaler as f64,
+                        z: self.z * scaler as f64
+                    }
+                }
+            }
+            impl ops::DivAssign<$typ> for Vec3{
+                fn div_assign(&mut self, scaler: $typ) {
+                    *self = Vec3 {
+                        x: self.x / scaler as f64,
+                        y: self.y / scaler as f64,
+                        z: self.z / scaler as f64
+                    }
+                }
+            }
         )*
     };
 }
-//once, it was able to do muli/divi on (ty, ty, ty), but I couldn't make the macro behave enough to
-//do it, so that idea was scrapped
+/*macro_rules! impl_muli_divi_tuple {
+    ($(($typa:ty, $typb:ty, $typc:ty)), *) => {
+        $(
+          impl ops::Mul<($typa, $typb, $typc)> for Vec3{
+                type Output = Vec3;
+
+                fn mul(self, scaler: ($typa, $typb, $typc)) -> Vec3{
+                    Vec3::new(self.x * scaler.0 as f64, self.y * scaler.1 as f64, self.z * scaler.2 as f64)
+                }
+            }
+            impl ops::Div<($typa, $typb, $typc)> for Vec3{
+                type Output = Vec3;
+
+                fn div(self, scaler: ($typa, $typb, $typc)) -> Vec3{
+                    Vec3::new(self.x / scaler.0 as f64, self.y / scaler.1 as f64, self.z / scaler.0 as f64)
+                }
+            }
+            impl ops::MulAssign<($typa, $typb, $typc)> for Vec3{
+                fn mul_assign(&mut self, scaler: ($typa, $typb, $typc)) {
+                    *self = Vec3 {
+                        x: self.x * scaler.0 as f64,
+                        y: self.y * scaler.1 as f64,
+                        z: self.z * scaler.2 as f64
+                    }
+                }
+            }
+            impl ops::DivAssign<($typa, $typb, $typc)> for Vec3{
+                fn div_assign(&mut self, scaler: ($typa, $typb, $typc)) {
+                    *self = Vec3 {
+                        x: self.x / scaler.0 as f64,
+                        y: self.y / scaler.1 as f64,
+                        z: self.z / scaler.2 as f64
+                    }
+                }
+            }
+        )*
+    }
+}*/
 impl_muli_divi!(
     f32, f64,
     u8, u16, u32, u64, u128, usize, 
