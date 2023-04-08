@@ -1,6 +1,5 @@
 use std::ops;
 use std::fmt;
-#[derive(Clone)]
 pub struct Vec3 {
     pub x: f64,
     pub y: f64,
@@ -134,7 +133,7 @@ impl ops::Sub<Vec3> for Vec3 {
     type Output = Vec3;
 
     fn sub(self, translation: Vec3) -> Vec3{
-        Vec3::new(self.x - translation.x , self.y - translation.y, self.z - translation.y)
+        Vec3::new(self.x - translation.x , self.y - translation.y, self.z - translation.z)
     }
 }
 impl ops::Mul<Vec3> for Vec3 {
@@ -153,7 +152,12 @@ impl std::cmp::PartialEq for Vec3 {
         (self.x == other.x) && (self.y == other.y) && (self.z == other.z)
     }
 }
-
+impl Copy for Vec3 {}
+impl Clone for Vec3 {
+    fn clone(&self) -> Vec3 {
+        *self
+    }
+}
 //my new favorite thing ever
 macro_rules! impl_muli_divi {
     ($($typ:ty), *) => {
