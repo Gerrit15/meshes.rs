@@ -20,7 +20,7 @@ impl <'a>Triangle<'a> {
     }
     //based on the function N(a, b, c) = |(B - A) X (B - C)|
     //Because it generates the cross product of the two legs of a triangle, then normalizes it
-    pub fn gen_normal(a: &'a Vec3, b: &'a Vec3, c: &'a Vec3) -> Vec3 {
+    fn gen_normal(a: &'a Vec3, b: &'a Vec3, c: &'a Vec3) -> Vec3 {
         let ba = *b-*a;
         let bc = *b-*c;
         ba.cross(bc).normalize()
