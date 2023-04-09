@@ -6,6 +6,6 @@ use triangle::Triangle;
 use object::Object;
 
 fn main() {
-    let fred = Object::new_rect(3.0, 2.0, 2.0, Vec3::new(0.0, 0.0, 0.0), (0.0, 0.0, 0.0));
-    println!("{}", fred);
+    let a = Object::new_rect(1.0, 3.0, 2.0, None, None);
+    println!("{}", a);
 }

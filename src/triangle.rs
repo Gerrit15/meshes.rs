@@ -32,3 +32,10 @@ impl fmt::Display for Triangle {
         write!(f, "Vertex 1: {}\nVertex 2: {}\nVertex 3: {}\nNormal: {}", &self.vertex1, &self.vertex2, &self.vertex3, &self.normal)
     }
 }
+
+impl Copy for Triangle {}
+impl Clone for Triangle {
+    fn clone(&self) -> Triangle {
+        *self
+    }
+}

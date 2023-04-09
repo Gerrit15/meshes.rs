@@ -14,6 +14,7 @@ impl Vec3 {
     pub fn magnatude(&self) -> f64 {
         return (self.x*self.x+self.y*self.y+self.z*self.z).sqrt()
     }
+    // ^n = n/|n|
     pub fn normalize(&self) -> Vec3 {
         return self.clone()/self.magnatude()
     }
@@ -30,18 +31,23 @@ impl Vec3 {
     *  y' = 0x + cos(theta)y + -sin(theta)z
     *  z' = 0x + sin(theta)y + cos(theta)
     */
-    pub fn rotate_x(&self, degrees: f64) -> Vec3 {
-        let sine = match degrees as u32 {
-            0 => 0.0,
-            30 => 0.5,
-            90 => 1.0,
-            _ => degrees.to_radians().sin()
-        };
-        let cosine = match degrees as u32 {
-            0 => 1.0,
-            60 => 0.5,
-            90 => 0.0,
-            _ => degrees.to_radians().cos()
+    pub fn rotate_x(&self, theta: f64) -> Vec3 {
+        let (sine, cosine) = {
+            if theta == 0.0 {
+                (0.0, 1.0)
+            }
+            else if theta == 30.0 {
+                (0.5, theta.to_radians().cos())
+            }
+            else if theta == 60.0 {
+                (theta.to_radians().sin(), 0.5)
+            }
+            else if theta == 90.0 {
+                (1.0, 0.0)
+            }
+            else {
+                (theta.to_radians().sin(), theta.to_radians().cos())
+            }
         };
         let y_prime = cosine*self.y + sine*self.z * -1.0;
         let z_prime = sine*self.y + cosine*self.z;
@@ -57,18 +63,23 @@ impl Vec3 {
     *  y' = 0x + 1y + 0z
     *  z' = -sin(theta)x + 0y + cos(theta)z
     */
-    pub fn rotate_y(&self, degrees: f64) -> Vec3 {
-        let sine = match degrees as u32 {
-            0 => 0.0,
-            30 => 0.5,
-            90 => 1.0,
-            _ => degrees.to_radians().sin()
-        };
-        let cosine = match degrees as u32 {
-            0 => 1.0,
-            60 => 0.5,
-            90 => 0.0,
-            _ => degrees.to_radians().cos()
+    pub fn rotate_y(&self, theta: f64) -> Vec3 {
+        let (sine, cosine) = {
+            if theta == 0.0 {
+                (0.0, 1.0)
+            }
+            else if theta == 30.0 {
+                (0.5, theta.to_radians().cos())
+            }
+            else if theta == 60.0 {
+                (theta.to_radians().sin(), 0.5)
+            }
+            else if theta == 90.0 {
+                (1.0, 0.0)
+            }
+            else {
+                (theta.to_radians().sin(), theta.to_radians().cos())
+            }
         };
         let x_prime = cosine*self.x + sine*self.z;
         let z_prime = (-1.0)*sine*self.x + cosine*self.z;
@@ -84,18 +95,23 @@ impl Vec3 {
     *  y' = sin(theta)x + cos(theta)y + 0z
     *  z' = 0x + 0y + 1z
     */
-    pub fn rotate_z(&self, degrees: f64) -> Vec3 {
-        let sine = match degrees as u32 {
-            0 => 0.0,
-            30 => 0.5,
-            90 => 1.0,
-            _ => degrees.to_radians().sin()
-        };
-        let cosine = match degrees as u32 {
-            0 => 1.0,
-            60 => 0.5,
-            90 => 0.0,
-            _ => degrees.to_radians().cos()
+    pub fn rotate_z(&self, theta: f64) -> Vec3 {
+        let (sine, cosine) = {
+            if theta == 0.0 {
+                (0.0, 1.0)
+            }
+            else if theta == 30.0 {
+                (0.5, theta.to_radians().cos())
+            }
+            else if theta == 60.0 {
+                (theta.to_radians().sin(), 0.5)
+            }
+            else if theta == 90.0 {
+                (1.0, 0.0)
+            }
+            else {
+                (theta.to_radians().sin(), theta.to_radians().cos())
+            }
         };
         let x_prime = cosine*self.x + (-1.0)*sine*self.y;
         let y_prime = sine*self.x + cosine*self.y;
