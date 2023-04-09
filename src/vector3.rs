@@ -129,6 +129,13 @@ impl ops::Add<Vec3> for Vec3 {
         Vec3::new(self.x + translation.x , self.y + translation.y, self.z + translation.z)
     }
 }
+impl ops::Add<(f64, f64, f64)> for Vec3 {
+    type Output = Vec3;
+
+    fn add(self, translation: (f64, f64, f64)) -> Vec3{
+        Vec3::new(self.x + translation.0 , self.y + translation.0, self.z + translation.0)
+    }
+}
 impl ops::Sub<Vec3> for Vec3 {
     type Output = Vec3;
 
