@@ -1,1 +1,2 @@
-# W E  B E  M E S H I N G
+#meshes.rs
+Meshes.rs is a stupid adventure into computer graphics and linear algebra
