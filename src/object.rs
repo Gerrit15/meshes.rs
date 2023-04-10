@@ -69,6 +69,32 @@ impl Object {
             faces: triangles
         }
     }
+    //my life is hell, fuck triangles
+    pub fn tetrahedron(radius: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
+        let scaled_cos45 = 0.707106781*radius;
+        //equalateral triangle: 
+        let mut verts = vec![
+            Vec3::new(scaled_cos45, -scaled_cos45, -scaled_cos45),
+            Vec3::new(-scaled_cos45, -scaled_cos45, -scaled_cos45),
+            Vec3::new(0.0, radius, -scaled_cos45),
+            Vec3::new(0.0, 0.0, scaled_cos45)
+        ];
+        let mut triangles = vec![
+            Triangle::new(&verts[0], &verts[1], &verts[2]),
+            Triangle::new(&verts[0], &verts[2], &verts[3]),
+            Triangle::new(&verts[0], &verts[1], &verts[3]),
+            Triangle::new(&verts[1], &verts[2], &verts[3]),
+        ]; 
+        let origin = match origin {
+            Some(x) => x,
+            None => Vec3::new(0.0, 0.0, 0.0)
+        };
+        Object { 
+            verticies: verts,
+            origin,
+            faces: triangles
+        }
+    }
     /*
     pub fn sphere() {}
     pub fn pyramid() {}
