@@ -6,6 +6,6 @@ use triangle::Triangle;
 use object::Object;
 
 fn main() {
-    let a = Object::new_rect(1.0, 3.0, 2.0, None, None);
+    let a = Object::new_tetrahedron(1.0, None, None);
     println!("{}", a);
 }

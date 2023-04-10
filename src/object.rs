@@ -2,6 +2,7 @@ use crate::Vec3;
 use crate::Triangle;
 use std::{ops, fmt};
 
+#[derive(Clone)]
 pub struct Object {
     pub verticies: Vec<Vec3>,
     pub origin: Vec3,
@@ -12,8 +13,8 @@ impl Object {
     /*
     * Look into Delaunay Triangulation, this should do the trick
     *
-    pub fn new(verticies: Vec<Vec3>, faces: Vec<Triangle>) -> Object {
-        Object { verticies, faces }
+    pub fn new(verticies: Vec<Vec3>, origin: Option<Vec3>) -> Object {
+        Object { verticies, origin faces }
     }*/
 
     pub fn new_rect(length: f64, width: f64, height: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
@@ -70,16 +71,25 @@ impl Object {
         }
     }
     //my life is hell, fuck triangles
-    pub fn tetrahedron(radius: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
-        let scaled_cos45 = 0.707106781*radius;
-        //equalateral triangle: 
+    pub fn new_tetrahedron(radius: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
         let mut verts = vec![
-            Vec3::new(scaled_cos45, -scaled_cos45, -scaled_cos45),
-            Vec3::new(-scaled_cos45, -scaled_cos45, -scaled_cos45),
-            Vec3::new(0.0, radius, -scaled_cos45),
-            Vec3::new(0.0, 0.0, scaled_cos45)
+            Vec3::new(-radius, 0.0, 0.0).rotate_y(-45.0),
+            Vec3::new(0.0, -radius, 0.0).rotate_x(45.0).rotate_z(45.0),
+            Vec3::new(0.0, radius, 0.0).rotate_x(-45.0).rotate_z(-45.0),
+            Vec3::new(0.0, 0.0, radius)
         ];
-        let mut triangles = vec![
+        match rotation {
+            Some(rotation) => {
+                let mut i = 0;
+                while (i as usize) < verts.len() {
+                    let v = verts[i].rotate_x(rotation.0).rotate_y(rotation.1).rotate_z(rotation.2);
+                    verts[i] = v;
+                    i += 1
+                }
+            },
+            None => ()
+        }
+        let triangles = vec![
             Triangle::new(&verts[0], &verts[1], &verts[2]),
             Triangle::new(&verts[0], &verts[2], &verts[3]),
             Triangle::new(&verts[0], &verts[1], &verts[3]),
@@ -108,28 +118,24 @@ impl Object {
     pub fn rotate_x(&mut self, theta: f64) {
         let mut i = 0;
         while i < self.verticies.len() {
-            self.verticies[i] = self.verticies[i].rotate_x(theta);
+            self.verticies[i].rotate_x(theta);
             i += 1
         }
         i = 0;
         while i < self.faces.len() {
-            self.faces[i].vertex1 = self.faces[i].vertex1.rotate_x(theta);
-            self.faces[i].vertex2 = self.faces[i].vertex2.rotate_x(theta);
-            self.faces[i].vertex3 = self.faces[i].vertex3.rotate_x(theta);
+            self.faces[i].rotate_x(theta);
             i += 1
         }
     }
     pub fn rotate_y(&mut self, theta: f64) {
         let mut i = 0;
         while i < self.verticies.len() {
-            self.verticies[i] = self.verticies[i].rotate_y(theta);
+            self.verticies[i].rotate_y(theta);
             i += 1
         }
         i = 0;
         while i < self.faces.len() {
-            self.faces[i].vertex1 = self.faces[i].vertex1.rotate_y(theta);
-            self.faces[i].vertex2 = self.faces[i].vertex2.rotate_y(theta);
-            self.faces[i].vertex3 = self.faces[i].vertex3.rotate_y(theta);
+            self.faces[i].rotate_y(theta);
             i += 1
         }
     }
@@ -141,9 +147,7 @@ impl Object {
         }
         i = 0;
         while i < self.faces.len() {
-            self.faces[i].vertex1 = self.faces[i].vertex1.rotate_z(theta);
-            self.faces[i].vertex2 = self.faces[i].vertex2.rotate_z(theta);
-            self.faces[i].vertex3 = self.faces[i].vertex3.rotate_z(theta);
+            self.verticies[i].rotate_z(theta);
             i += 1
         }
     }
@@ -165,19 +169,6 @@ impl fmt::Display for Object {
             triangles += &verts
         }
         write!(f, "{}\n{}", verts, triangles)
-    }
-}
-impl Clone for Object {
-    fn clone(&self) -> Object {
-        let mut verticies = vec![];
-        for i in &self.verticies {verticies.push(*i);}
-        let mut faces = vec![];
-        for i in &self.faces {faces.push(*i);}
-        Object {
-            verticies,
-            origin: self.origin.clone(),
-            faces
-        }
     }
 }
 impl ops::Add<Vec3> for Object{
