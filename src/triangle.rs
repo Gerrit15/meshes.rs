@@ -1,5 +1,4 @@
 use core::fmt;
-
 use crate::Vec3;
 
 #[derive(Clone, Copy)]
@@ -40,6 +39,14 @@ impl Triangle {
         self.vertex1 = self.vertex1.rotate_z(theta);
         self.vertex2 = self.vertex2.rotate_z(theta);
         self.vertex3 = self.vertex3.rotate_z(theta);
+    }
+    pub fn closest_point(&self, point: Vec3) -> Vec3 {
+        //conceptually, this is generating the closest point on the base 
+        //of the triangle, then taking that point and getting the closest point 
+        //between that and the top point of the triangle 
+        let base_point = Vec3::closest_on_line(self.vertex1, self.vertex2, point);
+        return Vec3::closest_on_line(base_point, self.vertex3, point)
+
     }
 }
 

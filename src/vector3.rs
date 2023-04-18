@@ -20,7 +20,7 @@ impl Vec3 {
     }
 
     //these functions use degrees because while radians are superior, 
-    //degrees are represented with less sig figs
+    //degrees can be represented with less annoyance
 
     /*
     * [  1       0           0       ]
@@ -132,9 +132,34 @@ impl Vec3 {
         let z_prime = self.x*b.y - self.y*b.x;
         Vec3::new(x_prime, y_prime, z_prime)
     }
+
+    // d' = d -2(d*n)n
     pub fn reflect(&self, n: Vec3) -> Vec3{
-        // d' = d -2(d*n)n
         self.clone() + (-2.0 * (self.clone() * n.clone()))*n.clone()
+    }
+
+    //this is based off of this stackoverflow question: 
+    //https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+    //which seems to be based on this paper:
+    //http://paulbourke.net/geometry/pointlineplane/
+    //fun fact: idk if this actually works or not, couldn't make it work in geo nodes
+    pub fn closest_on_line(seg1: Vec3, seg2: Vec3, point: Vec3) -> Vec3 {
+        let p1_to_point = point - seg1;
+        let line = seg2 - seg1;
+        let dot = p1_to_point * line;
+        let len_sq = line.x*line.x + line.y * line.y + line.z * line.z;
+        let param = {
+            if len_sq != 0.0 {dot/len_sq}
+            else {0.0}
+        };
+        let closest_point = {
+            if param < 0.0 {seg1}
+            else if param > 1.0 {seg2}
+            else {
+                Vec3::new(seg1.x + param*line.x, seg1.y + param*line.y, seg1.z + param*line.z)
+            }
+        };
+        return closest_point
     }
 
     //honestly I'm not quite sure what this should return. 
