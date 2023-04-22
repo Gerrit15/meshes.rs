@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::Vec3;
 use crate::Triangle;
 use std::{ops, fmt};

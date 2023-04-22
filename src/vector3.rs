@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use std::ops;
 use std::fmt;
 pub struct Vec3 {
@@ -161,25 +162,6 @@ impl Vec3 {
         };
         return closest_point
     }
-
-    //honestly I'm not quite sure what this should return. 
-    //Ideally it returns a lot of data, such as color, distance travelled, et cetera
-    //For now we'll stick to returning either the face that it intersected or the point it
-    //intersected
-    //Even more precisely we're gonna be fiddling with just points.
-    //go look at sebastian lague idk man
-    /*pub fn raycast(&self, origin: Option<Vec3>, max_len: f64, points: &Vec<Vec3>) -> Option<Vec3> {
-        let mut ray = self.clone();
-        let origin = match origin {
-            Some(x) => x,
-            _ => Vec3::new(0.0, 0.0, 0.0)
-        };
-        while ray.magnatude() < max_len {
-            //
-            ray += self.clone();
-        }
-        None
-    }*/
 }
 
 impl ops::Add<Vec3> for Vec3 {
