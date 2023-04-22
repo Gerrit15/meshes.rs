@@ -1,4 +1,4 @@
-use crate::{Vec3, Object};
+use crate::{Vec3, Object, Triangle};
 
 #[derive(Clone, Copy)]
 pub struct Ray {
@@ -13,19 +13,42 @@ impl Ray {
             direction
         }
     }
-    pub fn cast(self, scene: &Vec<Object>) -> usize {
-        let mut distance = (scene[0].faces[0].closest_point(self.into()) - self.into()).magnatude();
-        loop {
+
+    pub fn cast(self, scene: &Vec<Object>) -> (Option<Object>, Ray){
+/*        loop {
+            let mut distance = (scene[0].faces[0].closest_point(self.origin) - self.origin).magnatude();
             for o in scene {
+                if distance == 0.0 {return (Some(o.clone()), self)}
+                if distance <= 0.01 {return (Some(o.clone()), self)}
+                if distance >= (10.0 * 10_i32.pow(6) as f64) {return (None, self)}
                 for f in &o.faces {
-                    let distance_from_face = (f.closest_point(self.into()) - self.into()).magnatude(); 
-                    println!("distance: {}", distance_from_face);
-                    if distance_from_face > distance {distance = distance_from_face}
+                    let distance_from_face = self.distance_to_face(f);
+                    if distance_from_face < distance {distance = distance_from_face}
                 }
             }
-            break
+            self.direction += (self.direction * distance);
+            println!("Distance: {distance}\nSelf direction: {}", self.direction);
         }
-        0
+        */
+        let mut current_pos = self.origin;
+        loop {
+            let mut distance = (scene[0].faces[0].closest_point(self.origin) - self.origin).magnatude();
+            for o in scene {
+                if distance <= 0.01 {return (Some(o.clone()), self)}
+                if distance >= 1000000.0 {return (Some(o.clone()), self)}
+                for f in &o.faces {
+                    let distance_from_face = self.distance_to_face(f);
+                    if distance_from_face < distance {distance = distance_from_face}
+                }
+            }
+            current_pos += self.direction*distance;
+        }
+    }
+
+    fn distance_to_face(&self, face: &Triangle) -> f64 {
+        let point: Vec3 = (*self).into();
+        let distance_from_face = face.closest_point(point) - point;
+        return distance_from_face.magnatude()
     }
 }
 
