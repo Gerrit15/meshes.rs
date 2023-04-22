@@ -168,7 +168,7 @@ impl Vec3 {
     //intersected
     //Even more precisely we're gonna be fiddling with just points.
     //go look at sebastian lague idk man
-    pub fn raycast(&self, origin: Option<Vec3>, max_len: f64, points: &Vec<Vec3>) -> Option<Vec3> {
+    /*pub fn raycast(&self, origin: Option<Vec3>, max_len: f64, points: &Vec<Vec3>) -> Option<Vec3> {
         let mut ray = self.clone();
         let origin = match origin {
             Some(x) => x,
@@ -179,7 +179,7 @@ impl Vec3 {
             ray += self.clone();
         }
         None
-    }
+    }*/
 }
 
 impl ops::Add<Vec3> for Vec3 {

@@ -70,7 +70,7 @@ impl Object {
             faces: triangles
         }
     }
-    //my life is hell, fuck triangles
+
     pub fn new_tetrahedron(radius: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
         let mut verts = vec![
             Vec3::new(-radius, 0.0, 0.0).rotate_y(-45.0),
