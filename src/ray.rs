@@ -3,57 +3,44 @@ use crate::{Vec3, Object, Triangle};
 #[derive(Clone, Copy)]
 pub struct Ray {
     pub origin: Vec3,
-    pub direction: Vec3
+    pub location: Vec3,
+    pub direction: Vec3,
+    pub steps: u64
 }
 
 impl Ray {
     pub fn new(origin: Vec3, direction: Vec3) -> Ray {
         Ray {
             origin,
-            direction
+            location: origin,
+            direction,
+            steps: 0
         }
     }
 
-    pub fn cast(self, scene: &Vec<Object>) -> (Option<Object>, Ray){
-/*        loop {
-            let mut distance = (scene[0].faces[0].closest_point(self.origin) - self.origin).magnatude();
-            for o in scene {
-                if distance == 0.0 {return (Some(o.clone()), self)}
-                if distance <= 0.01 {return (Some(o.clone()), self)}
-                if distance >= (10.0 * 10_i32.pow(6) as f64) {return (None, self)}
-                for f in &o.faces {
-                    let distance_from_face = self.distance_to_face(f);
-                    if distance_from_face < distance {distance = distance_from_face}
-                }
-            }
-            self.direction += (self.direction * distance);
-            println!("Distance: {distance}\nSelf direction: {}", self.direction);
-        }
-        */
-        let mut current_pos = self.origin;
+    pub fn cast(mut self, scene: &Vec<Object>, max_steps: u64) -> (Option<Object>, Ray){
         loop {
-            let mut distance = (scene[0].faces[0].closest_point(self.origin) - self.origin).magnatude();
-            for o in scene {
-                if distance <= 0.01 {return (Some(o.clone()), self)}
-                if distance >= 1000000.0 {return (Some(o.clone()), self)}
-                for f in &o.faces {
-                    let distance_from_face = self.distance_to_face(f);
-                    if distance_from_face < distance {distance = distance_from_face}
+            //set up this way because I'm not sure if I want to return an index or an object
+            let mut i = 0;
+            let mut r = self.distance_to_face(&scene[0].faces[0]);
+            while i < scene.len() {
+                for f in &scene[i].faces {
+                    let dist = self.distance_to_face(f);
+                    if dist < r {r = dist}
                 }
+                if r < 0.01 {return (Some(scene[i].clone()), self)}
+                i += 1;
             }
-            current_pos += self.direction*distance;
+            println!("radius: {}", r);
+            println!("Location: {}", self.location);
+            self.location += self.direction * r;
+            self.steps += 1;
+            if self.steps >= max_steps {return (None, self)}
         }
     }
 
     fn distance_to_face(&self, face: &Triangle) -> f64 {
-        let point: Vec3 = (*self).into();
-        let distance_from_face = face.closest_point(point) - point;
+        let distance_from_face = face.closest_point(self.location) - self.location;
         return distance_from_face.magnatude()
-    }
-}
-
-impl Into<Vec3> for Ray {
-    fn into(self) -> Vec3 {
-        self.origin + self.direction
     }
 }

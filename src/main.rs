@@ -19,5 +19,12 @@ fn main() {
         Vec3::new(0.0, 0.0, 3.0),
         Vec3::new(0.0, 0.0, -1.0)
     );
-    let _ = cast.cast(&scene);
+    let a = cast.cast(&scene, 100);
+    match a.0 {
+        Some(x) => {
+            println!("Object hit: {}", x)
+        },
+        _ => println!("Nothing hit")
+    }
+    println!("Steps taken: {}", a.1.steps);
 }
