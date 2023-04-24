@@ -26,20 +26,23 @@ impl Triangle {
         let bc = b-c;
         ba.cross(bc).normalize()
     }
-    pub fn rotate_x(&mut self, theta: f64) {
-        self.vertex1 = self.vertex1.rotate_x(theta);
-        self.vertex2 = self.vertex2.rotate_x(theta);
-        self.vertex3 = self.vertex3.rotate_x(theta);
+    pub fn rotate_x(&self, theta: f64) -> Triangle {
+        let a = self.vertex1.rotate_x(theta);
+        let b = self.vertex2.rotate_x(theta);
+        let c = self.vertex3.rotate_x(theta);
+        Triangle::new(&a, &b, &c)
     }
-    pub fn rotate_y(&mut self, theta: f64) {
-        self.vertex1 = self.vertex1.rotate_x(theta);
-        self.vertex2 = self.vertex2.rotate_x(theta);
-        self.vertex3 = self.vertex3.rotate_x(theta);
+    pub fn rotate_y(&self, theta: f64) -> Triangle {
+        let a = self.vertex1.rotate_y(theta);
+        let b = self.vertex2.rotate_y(theta);
+        let c = self.vertex3.rotate_y(theta);
+        Triangle::new(&a, &b, &c)
     }
-    pub fn rotate_z(&mut self, theta: f64) {
-        self.vertex1 = self.vertex1.rotate_z(theta);
-        self.vertex2 = self.vertex2.rotate_z(theta);
-        self.vertex3 = self.vertex3.rotate_z(theta);
+    pub fn rotate_z(&self, theta: f64) -> Triangle {
+        let a = self.vertex1.rotate_z(theta);
+        let b = self.vertex2.rotate_z(theta);
+        let c = self.vertex3.rotate_z(theta);
+        Triangle::new(&a, &b, &c)
     }
     pub fn closest_point(&self, point: Vec3) -> Vec3 {
         //conceptually, this is generating the closest point on the base 

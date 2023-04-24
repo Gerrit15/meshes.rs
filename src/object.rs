@@ -18,6 +18,9 @@ impl Object {
         Object { verticies, origin faces }
     }*/
 
+    pub fn new(verticies: Vec<Vec3>, faces: Vec<Triangle>, origin: Vec3) -> Object {
+        Object {verticies, origin, faces}
+    }
     pub fn new_rect(length: f64, width: f64, height: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
         let mut verts = vec![
             Vec3::new(-(length/2.0), width/2.0, -height/2.0),
@@ -116,41 +119,38 @@ impl Object {
     */
 
     //consider rewriting allllll of this post triangulate()
-    pub fn rotate_x(&mut self, theta: f64) {
-        let mut i = 0;
-        while i < self.verticies.len() {
-            self.verticies[i].rotate_x(theta);
-            i += 1
+    pub fn rotate_x(&self, theta: f64) -> Object {
+        let mut verts = vec![];
+        for v in &self.verticies {
+            verts.push(v.rotate_x(theta))
         }
-        i = 0;
-        while i < self.faces.len() {
-            self.faces[i].rotate_x(theta);
-            i += 1
+        let mut faces = vec![];
+        for f in &self.faces {
+            faces.push(f.rotate_x(theta))
         }
+        Object::new(verts, faces, self.origin)
     }
-    pub fn rotate_y(&mut self, theta: f64) {
-        let mut i = 0;
-        while i < self.verticies.len() {
-            self.verticies[i].rotate_y(theta);
-            i += 1
+    pub fn rotate_y(&self, theta: f64) -> Object {
+        let mut verts = vec![];
+        for v in &self.verticies {
+            verts.push(v.rotate_y(theta))
         }
-        i = 0;
-        while i < self.faces.len() {
-            self.faces[i].rotate_y(theta);
-            i += 1
+        let mut faces = vec![];
+        for f in &self.faces {
+            faces.push(f.rotate_y(theta))
         }
+        Object::new(verts, faces, self.origin)
     }
-    pub fn rotate_z(&mut self, theta: f64) {
-        let mut i = 0;
-        while i < self.verticies.len() {
-            self.verticies[i] = self.verticies[i].rotate_z(theta);
-            i += 1
+    pub fn rotate_z(&self, theta: f64) -> Object {
+        let mut verts = vec![];
+        for v in &self.verticies {
+            verts.push(v.rotate_z(theta))
         }
-        i = 0;
-        while i < self.faces.len() {
-            self.verticies[i].rotate_z(theta);
-            i += 1
+        let mut faces = vec![];
+        for f in &self.faces {
+            faces.push(f.rotate_z(theta))
         }
+        Object::new(verts, faces, self.origin)
     }
 }
 impl fmt::Display for Object {
