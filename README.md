@@ -7,11 +7,12 @@ Meshes.rs is a stupid adventure into computer graphics and linear algebra
 - [x] create object struct
 - [x] be able to transform, add, multiply, rotate, etc said structs 
 - [x] create ray struct
-- [ ] impliment a raymarching function to ray struct 
+- [x] impliment a raymarching function to ray struct 
+- [ ] confirm that raymarching function *actually* works
 - [ ] color, whether in the form of vec3 methods or unique structs
 - [ ] refactor many parts into traits, such as rotation
 - [ ] generate all primitaves with object struct (currently only rect and tetrahedron)
-- [ ] triangulation functioni
+- [ ] impl addition, subtraction, etc for object
 
 ## current issues
 right now, we're having a lot of issues making the ray marching work.
