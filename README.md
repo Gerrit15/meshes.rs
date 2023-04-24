@@ -14,6 +14,9 @@ Meshes.rs is a stupid adventure into computer graphics and linear algebra
 - [ ] generate all primitaves with object struct (currently only rect and tetrahedron)
 - [ ] impl addition, subtraction, etc for object
 - [ ] impl distance traveled in ray stuff, then have it display
+- [ ] make way to convert point cloud to convex hull
+- [ ] make a way to import .obj files
+- [ ] at some point should be able to export
 
 ## current issues
 right now, we're having a lot of issues making the ray marching work.
