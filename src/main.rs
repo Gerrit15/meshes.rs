@@ -2,13 +2,17 @@ mod vector3;
 mod triangle;
 mod object;
 mod ray;
+mod camera;
+mod writer;
 use vector3::Vec3;
 use triangle::Triangle;
 use object::Object;
-use ray::Ray;
+//use ray::Ray;
+use writer::export_to_ppm;
+//use camera::Camera;
 
 fn main() {
-    let scene = vec![
+/*    let scene = vec![
         Object::new_rect(1.0, 1.0, 1.0, None, Some((45.0, 0.0, 0.0))),
         Object::new_rect(1.0, 1.0, 1.0, Some(Vec3::new(0.0, 5.0, 0.0)), None)
     ];
@@ -24,4 +28,16 @@ fn main() {
         _ => println!("Nothing hit")
     }
     println!("Steps taken: {}\nDistance travelled: {}", a.1.steps, a.1.distance);
+*/
+/*    let cam = Camera::new(Vec3::new(0.0, 0.0, 0.0), Vec3::new(0.0, 1.0, 0.0), 4, 4);
+    for i in cam.pixels {
+        for j in i {
+            print!("({}, {})", j.x, j.y)
+        }
+        println!()
+    }*/
+    let pixels = vec![
+        vec![Vec3::new(0.0, 0.0, 0.0);3];6
+    ];
+    export_to_ppm(pixels, 3, 6);
 }
