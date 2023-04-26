@@ -1,4 +1,6 @@
+#![allow(dead_code)]
 use crate::Vec3;
+use std::{fs::File, io::Write};
 
 //as per wikipedia
 /*
@@ -15,7 +17,7 @@ P3           # "P3" means this is a RGB color image in ASCII
   0   0   0  # black
 */
 
-pub fn export_to_ppm(pixels: Vec<Vec<Vec3>>, vres: u64, hres: u64) {
+pub fn export_to_ppm(pixels: Vec<Vec<Vec3>>, vres: usize, hres: usize, name: Option<String>) {
     let header = "P3\n".to_owned() + &hres.to_string() + " " + &vres.to_string() + "\n" + "255\n"; 
     let mut output_pixels = vec![];
     for i in pixels {
@@ -28,5 +30,9 @@ pub fn export_to_ppm(pixels: Vec<Vec<Vec3>>, vres: u64, hres: u64) {
         }
     }
     let output = header + &output_pixels.concat();
-    println!("Output: {}", output);
+    let title = match name {
+        Some(x) => x,
+        _ => "output".to_owned()
+    } + ".ppm";
+    File::create("output/".to_owned() + &title).unwrap().write_all(output.as_bytes()).unwrap();
 }

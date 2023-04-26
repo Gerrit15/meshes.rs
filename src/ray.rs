@@ -34,8 +34,6 @@ impl Ray {
                 if r < 0.0001 {return (Some((scene[i].clone(), i)), self)}
                 i += 1;
             }
-            println!("radius: {}", r);
-            println!("Location: {}", self.location);
             self.location += self.direction * r;
             self.distance += r;
             self.steps += 1;
