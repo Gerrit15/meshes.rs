@@ -25,26 +25,24 @@ impl Ray {
             //set up this way because I'm not sure if I want to return an index or an object
             //so for now, both
             let mut i = 0;
-            let mut r = self.distance_to_face(&scene[0].faces[0]);
+            let mut r = self.distance_to_face(&scene[0].faces[0], scene[0].origin);
             while i < scene.len() {
                 for f in &scene[i].faces {
-                    let dist = self.distance_to_face(f);
+                    let dist = self.distance_to_face(f, scene[i].origin);
                     if dist < r {r = dist}
                 }
                 if r < 0.0001 {return (Some((scene[i].clone(), i)), self)}
                 i += 1;
             }
-            println!("r: {}", r);
             self.location += self.direction * r;
             self.distance += r;
-            println!("location: {}", self.location);
             self.steps += 1;
             if self.steps >= max_steps {return (None, self)}
         }
     }
 
-    fn distance_to_face(&self, face: &Triangle) -> f64 {
-        let distance_from_face = face.closest_point(self.location) - self.location;
+    fn distance_to_face(&self, face: &Triangle, origin: Vec3) -> f64 {
+        let distance_from_face = face.closest_point(self.location, origin) - self.location;
         return distance_from_face.magnatude()
     }
 }
