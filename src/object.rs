@@ -21,6 +21,15 @@ impl Object {
     pub fn new(verticies: Vec<Vec3>, faces: Vec<Triangle>, origin: Vec3) -> Object {
         Object {verticies, origin, faces}
     }
+    pub fn new_triangle(v1: Vec3, v2: Vec3, v3: Vec3, origin: Option<Vec3>) -> Object {
+        let faces = vec![Triangle::new(&v1, &v2, &v3)];
+        let verts = vec![v1, v2, v3];
+        let origin = match origin {
+            Some(x) => x,
+            _ => Vec3::new(0.0, 0.0, 0.0)
+        };
+        Object { verticies: verts, origin, faces }
+    }
     pub fn new_rect(length: f64, width: f64, height: f64, origin: Option<Vec3>, rotation: Option<(f64, f64, f64)>) -> Object {
         let mut verts = vec![
             Vec3::new(-(length/2.0), width/2.0, -height/2.0),

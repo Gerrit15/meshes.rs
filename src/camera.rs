@@ -39,7 +39,7 @@ impl Camera {
             let mut j = 0;
             while j < hres {
                 buff.push(
-                    Vec3::new(xstep * j as f64, ystep * i as f64, 1.0)
+                    Vec3::new(xstep * j as f64 - 0.5, ystep * i as f64 - 0.5, 1.0)
                     .rotate_x(x_rot)
                     .rotate_y(y_rot)
                     .rotate_z(z_rot)

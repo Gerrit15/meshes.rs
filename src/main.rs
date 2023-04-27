@@ -9,35 +9,35 @@ use vector3::Vec3;
 use triangle::Triangle;
 use object::Object;
 use ray::Ray;
-//use writer::export_to_ppm;
-//use camera::Camera;
+use writer::export_to_ppm;
+use camera::Camera;
 
 fn main() {
     let scene = vec![
-        Object {
-            verticies: vec![
-                Vec3::new(10.0, 0.0, 5.0),
-                Vec3::new(0.0, 0.0, 5.0),
-                Vec3::new(0.0, 10.0, 5.0)
-            ],
-            origin: Vec3::new(0.0, 0.0, 0.0),
-            faces: vec![
-                Triangle::new(&Vec3::new(-10.0, 0.0, 0.0), &Vec3::new(10.0, 0.0, 0.0), &Vec3::new(0.0, 10.0, 0.0))
-            ]
-        }
+        Object::new_triangle(
+            Vec3::new(0.0, 0.0, 0.0), 
+            Vec3::new(10.0, 0.0, 0.0), 
+            Vec3::new(0.0, 10.0, 0.0), 
+            Some(Vec3::new(0.0, 0.0, -10.0))
+        )
     ];
-    let origin = Vec3::new(5.0, 2.0, 0.0);
-    let closest_point = scene[0].faces[0].closest_point(origin);
-    let test = Ray::new(closest_point, Vec3::new(0.0, 0.0, 1.0));
-    println!("Closest point between (5, 2, 0) and object with a height of 10, length of 10, pushed back 5: {}", closest_point);
-
-    let test_cast = test.cast(&scene, 100);
-    match test_cast.0 {
-        Some(_) => println!("Hit!"),
-        None => println!("no hit :(")
+    let camera = Camera::new(Vec3::new(4.0, 4.0, 0.0), Vec3::new(0.0, 0.0, 1.0), 10, 10);
+/*    for i in &camera.pixels {
+        for j in i {
+            print!("({:.2}, {:.2}) ", j.x, j.y)
+        }
+        println!()
+    }*/ 
+    println!("{}", camera.pixels[5][5]);
+    let pixel = Ray::new(camera.location, camera.pixels[5][5]);
+    println!("direction: {}", &pixel.direction);
+    let closest_point = scene[0].faces[0].closest_point(camera.location);
+    println!("Closest point: {closest_point}");
+    let cast_pixel = pixel.cast(&scene, 10);
+    match cast_pixel.0 {
+        Some(_) => println!("HIT!"),
+        _ => println!("not hit :(")
     }
-    //
-    //let camera = Camera::new(Vec3::new(0.0, 0.5, 2.0), Vec3::new(0.0, 0.0, 1.0), 100, 100);
-    //let render = camera.render(&scene, 10, 1);
-    //export_to_ppm(render, camera.resolution.0 as usize, camera.resolution.1 as usize, Some("first_try".to_string()));
+//    let render = camera.render(&scene, 10, 1);
+//    export_to_ppm(render,  Some("first_try".to_string()));
 }

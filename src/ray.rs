@@ -34,8 +34,10 @@ impl Ray {
                 if r < 0.0001 {return (Some((scene[i].clone(), i)), self)}
                 i += 1;
             }
+            println!("r: {}", r);
             self.location += self.direction * r;
             self.distance += r;
+            println!("location: {}", self.location);
             self.steps += 1;
             if self.steps >= max_steps {return (None, self)}
         }
