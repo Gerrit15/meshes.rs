@@ -47,7 +47,7 @@ impl Triangle {
     pub fn closest_point(&self, origin: Vec3, point: Vec3) -> Vec3 {
         //conceptually, this is generating the closest point on the base 
         //of the triangle, then taking that point and getting the closest point 
-        //between that and the top point of the triangle 
+        //between that and the top point of the triangle
         let base_point = Vec3::closest_on_line(self.vertex1 + origin, self.vertex2 + origin, point);
         return Vec3::closest_on_line(base_point, self.vertex3 + origin, point)
     }

@@ -62,13 +62,12 @@ impl Camera {
         for i in &self.pixels {
             let mut buff = vec![];
             for j in i {
-                let ray = Ray::new(self.location + *j, *j - self.location);
+                let ray = Ray::new(self.location + *j, *j);
                 let cast_ray = ray.cast(scene, max_steps);
                 buff.push(match cast_ray.0 {
                     Some(_) => {
-                        let brightness = cast_ray.1.location.z;
-                        println!("brightness: {brightness}");
-                        Vec3::new(brightness, brightness, brightness)
+                        println!("Hit");
+                        Vec3::new(255.0, 255.0, 255.0)
                     },
                     _ => {
                         Vec3::new(0.0, 0.0, 255.0)
