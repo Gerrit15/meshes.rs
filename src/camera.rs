@@ -49,6 +49,11 @@ impl Camera {
             pixels.push(buff);
             i += 1;
         }
+        for i in &pixels {
+            for j in i {
+                println!("Pixel: {}", j);
+            }
+        }
 
         Camera {
             location,
@@ -62,7 +67,7 @@ impl Camera {
         for i in &self.pixels {
             let mut buff = vec![];
             for j in i {
-                let ray = Ray::new(self.location + *j, *j);
+                let ray = Ray::new(self.location, *j);
                 let cast_ray = ray.cast(scene, max_steps);
                 buff.push(match cast_ray.0 {
                     Some(_) => {

@@ -25,7 +25,6 @@ impl Ray {
             //set up this way because I'm not sure if I want to return an index or an object
             //so for now, both
             let mut i = 0;
-            println!("Origin (in cast): {}", scene[0].origin);
             let mut r = self.distance_to_face(&scene[0].faces[0], scene[0].origin);
             while i < scene.len() {
                 for f in &scene[i].faces {
@@ -44,7 +43,10 @@ impl Ray {
 
     fn distance_to_face(&self, face: &Triangle, origin: Vec3) -> f64 {
         let distance_from_face = face.closest_point(origin, self.location) - self.location;
-        println!("Distance in distance function: {}", distance_from_face);
+        println!("Distance: {}", distance_from_face);
+        println!("Pos: {}", self.location);
+        println!("Direction: {}", self.direction);
+        println!("Object: {}\n", origin);
         return distance_from_face.magnatude()
     }
 }
