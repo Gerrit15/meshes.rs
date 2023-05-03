@@ -43,10 +43,6 @@ impl Ray {
 
     fn distance_to_face(&self, face: &Triangle, origin: Vec3) -> f64 {
         let distance_from_face = face.closest_point(origin, self.location) - self.location;
-        println!("Distance: {}", distance_from_face);
-        println!("Pos: {}", self.location);
-        println!("Direction: {}", self.direction);
-        println!("Object: {}\n", origin);
         return distance_from_face.magnatude()
     }
 }

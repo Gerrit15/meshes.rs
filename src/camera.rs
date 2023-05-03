@@ -43,17 +43,18 @@ impl Camera {
                     .rotate_x(x_rot)
                     .rotate_y(y_rot)
                     .rotate_z(z_rot)
+                    .normalize()
                 );
                 j += 1;
             }
             pixels.push(buff);
             i += 1;
         }
-        for i in &pixels {
-            for j in i {
-                println!("Pixel: {}", j);
-            }
-        }
+//        for i in &pixels {
+//           for j in i {
+//               println!("Pixel: {}", j);
+//           }
+//       }
 
         Camera {
             location,
