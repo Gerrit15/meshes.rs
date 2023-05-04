@@ -28,13 +28,21 @@ impl Ray {
             let mut r = self.distance_to_face(&scene[0].faces[0], scene[0].origin);
             while i < scene.len() {
                 for f in &scene[i].faces {
+                    println!("Face:\n{f}");
                     let dist = self.distance_to_face(f, scene[i].origin);
                     if dist < r {r = dist}
                 }
                 if r < 0.0001 {return (Some((scene[i].clone(), i)), self)}
                 i += 1;
             }
-            self.location += self.direction * r;
+            println!("\nLocation: {}", self.location);
+            println!("Direction: {}", self.direction);
+            println!("Radius: {}", r);
+            let a = scene[0].faces[0].closest_point(scene[0].origin, self.location);
+            println!("Closest point: {}", a);
+            println!("Distance travelled: {}\n", self.distance);
+            println!("------------------------------------------------------------------------------------------");
+            self.location = self.location + self.direction * r;
             self.distance += r;
             self.steps += 1;
             if self.steps >= max_steps {return (None, self)}
