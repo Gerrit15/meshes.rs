@@ -148,7 +148,7 @@ impl Vec3 {
         let p1_to_point = point - seg1;
         let line = seg2 - seg1;
         let dot = p1_to_point * line;
-        let len_sq = line.x*line.x + line.y * line.y + line.z * line.z;
+        let len_sq = (line.x * line.x) + (line.y * line.y) + (line.z * line.z);
         let param = {
             if len_sq != 0.0 {dot/len_sq}
             else {0.0}

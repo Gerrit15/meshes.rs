@@ -9,21 +9,21 @@ use ray::Ray;
 use vector3::Vec3;
 use triangle::Triangle;
 use object::Object;
-//use writer::export_to_ppm;
+use writer::export_to_ppm;
 //use camera::Camera;
 
 fn main() {
     let scene = vec![
         Object::new_triangle(
-            Vec3::new(5.0, 0.0, -5.0), 
-            Vec3::new(-5.0, 0.0, -5.0), 
-            Vec3::new(0.0, 5.0, -5.0), 
-            None
-//            Some(Vec3::new(0.0, 0.0, -5.0))
+            Vec3::new(10.0, 0.0, 0.0), 
+            Vec3::new(-10.0, 0.0, 0.0), 
+            Vec3::new(0.0, 10.0, 0.0), 
+//            None
+            Some(Vec3::new(0.0, 0.0, -5.0))
         )
     ];
-    let hres = 5;
-    let vres = 5;
+    let hres = 250;
+    let vres = 250;
     let xstep = 1.0/(hres as f64);
     let ystep = 1.0/(vres as f64);
 
@@ -44,35 +44,30 @@ fn main() {
     }
 //    for i in &projection_matrix { for j in i {println!("({}), ", j)}}
 
-    let ray = Ray::new(Vec3::new(0.0, 2.5, 0.0), projection_matrix[3][3]);
-    let cast_ray = ray.cast(&scene, 4);
+/*    let ray = Ray::new(Vec3::new(0.0, 0.1, 0.0), /*projection_matrix[3][3]*/ Vec3::new(0.1, 0.1, -1.0));
+    let cast_ray = ray.cast(&scene, 10);
     match cast_ray.0 {
         Some(_) => println!("Hit!"),
         None => println!("Miss :(")
     }
-    println!("Distance travelled: {}", cast_ray.1.distance);
- /*   let mut output = vec![];
+    println!("Distance travelled: {}", cast_ray.1.distance);*/
+   let mut output = vec![];
 
     for i in projection_matrix {
         let mut buff = vec![];
         for j in i {
-            println!("Direction: {j}");
             let ray = Ray::new(Vec3::new(0.0, 0.0, 0.0), j);
             let cast_ray = ray.cast(&scene, 15);
-            println!("Ray has gone: {}", cast_ray.1.distance);
             match cast_ray.0 {
                 Some(_) => {
-                    println!("Hit!");
                     buff.push(Vec3::new(255.0, 255.0, 255.0))
                 },
                 None => {
-                    println!("Miss!");
                     buff.push(Vec3::new(0.0, 0.0, 0.0))
                 }
             }
         }
         output.push(buff);
     }
-    export_to_ppm(output, None);
-    */
+    export_to_ppm(output, Some("Output 2".to_string()));
 }
