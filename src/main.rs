@@ -15,17 +15,14 @@ use writer::export_to_ppm;
 fn main() {
     let scene = vec![
         Object::new_triangle(
-            Vec3::new(10.0, 0.0, 0.0), 
-            Vec3::new(-10.0, 0.0, 0.0), 
-            Vec3::new(0.0, 10.0, 0.0), 
+            Vec3::new(100.0, 0.0, 0.0), 
+            Vec3::new(00.0, 0.0, 0.0), 
+            Vec3::new(0.0, -100.0, 0.0), 
 //            None
-            Some(Vec3::new(0.0, 0.0, -5.0))
+            Some(Vec3::new(0.0, 0.0, -500.0))
         )
     ];
-    let a = Vec3::new(0.0, 0.0, 0.0);
-    let d = scene[0].faces[0].sdf(a, scene[0].origin);
-    println!("{d}");
-    /*let hres = 250;
+    let hres = 250;
     let vres = 250;
     let xstep = 1.0/(hres as f64);
     let ystep = 1.0/(vres as f64);
@@ -45,15 +42,6 @@ fn main() {
         i += 1;
         projection_matrix.push(buff);
     }
-//    for i in &projection_matrix { for j in i {println!("({}), ", j)}}
-
-/*    let ray = Ray::new(Vec3::new(0.0, 0.1, 0.0), /*projection_matrix[3][3]*/ Vec3::new(0.1, 0.1, -1.0));
-    let cast_ray = ray.cast(&scene, 10);
-    match cast_ray.0 {
-        Some(_) => println!("Hit!"),
-        None => println!("Miss :(")
-    }
-    println!("Distance travelled: {}", cast_ray.1.distance);*/
    let mut output = vec![];
 
     for i in projection_matrix {
@@ -72,6 +60,6 @@ fn main() {
         }
         output.push(buff);
     }
-    export_to_ppm(output, Some("Output 2".to_string()));
-    */
+    export_to_ppm(output, Some("Messing with distance".to_string()));
+    
 }

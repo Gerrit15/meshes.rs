@@ -25,13 +25,14 @@ impl Ray {
             //set up this way because I'm not sure if I want to return an index or an object
             //so for now, both
             let mut i = 0;
-            let mut r = self.distance_to_face(&scene[0].faces[0], scene[0].origin);
+            let mut r = scene[0].faces[0].sdf(self.location, scene[0].origin);
             while i < scene.len() {
                 for f in &scene[i].faces {
-                    let dist = self.distance_to_face(f, scene[i].origin);
+//                    let dist = self.distance_to_face(f, scene[i].origin);
+                    let dist = f.sdf(self.location, scene[i].origin);
                     if dist < r {r = dist}
                 }
-                if r < 0.03 {return (Some((scene[i].clone(), i)), self)}
+                if r < 0.003 {return (Some((scene[i].clone(), i)), self)}
                 i += 1;
             }
             self.location = self.location + self.direction * r;
