@@ -14,16 +14,16 @@ use writer::export_to_ppm;
 
 fn main() {
     let scene = vec![
-        Object::new_triangle(
-            Vec3::new(100.0, 0.0, 0.0), 
-            Vec3::new(00.0, 0.0, 0.0), 
-            Vec3::new(0.0, -100.0, 0.0), 
-//            None
-            Some(Vec3::new(0.0, 0.0, -500.0))
-        )
+/*        Object::new_triangle(
+            Vec3::new(10.0, 0.0, 0.0), 
+            Vec3::new(-10.0, 0.0, 0.0), 
+            Vec3::new(0.0, -10.0, 0.0), 
+            Some(Vec3::new(0.0, 0.0, -50.0))
+        )*/
+        Object::new_rect(10.0, 10.0, 10.0, Some(Vec3::new(0.0, 0.0, -50.0)), None).rotate_x(45.0)
     ];
-    let hres = 250;
-    let vres = 250;
+    let hres = 1000;
+    let vres = 1000;
     let xstep = 1.0/(hres as f64);
     let ystep = 1.0/(vres as f64);
 
@@ -48,7 +48,7 @@ fn main() {
         let mut buff = vec![];
         for j in i {
             let ray = Ray::new(Vec3::new(0.0, 0.0, 0.0), j);
-            let cast_ray = ray.cast(&scene, 15);
+            let cast_ray = ray.cast(&scene, 10);
             match cast_ray.0 {
                 Some(_) => {
                     buff.push(Vec3::new(255.0, 255.0, 255.0))
@@ -60,6 +60,6 @@ fn main() {
         }
         output.push(buff);
     }
-    export_to_ppm(output, Some("Messing with distance".to_string()));
+    export_to_ppm(output, Some("testing rectangle".to_string()));
     
 }

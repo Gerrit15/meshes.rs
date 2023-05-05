@@ -32,7 +32,7 @@ impl Ray {
                     let dist = f.sdf(self.location, scene[i].origin);
                     if dist < r {r = dist}
                 }
-                if r < 0.003 {return (Some((scene[i].clone(), i)), self)}
+                if r < 0.001 {return (Some((scene[i].clone(), i)), self)}
                 i += 1;
             }
             self.location = self.location + self.direction * r;
