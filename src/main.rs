@@ -22,7 +22,10 @@ fn main() {
             Some(Vec3::new(0.0, 0.0, -5.0))
         )
     ];
-    let hres = 250;
+    let a = Vec3::new(0.0, 0.0, 0.0);
+    let d = scene[0].faces[0].sdf(a, scene[0].origin);
+    println!("{d}");
+    /*let hres = 250;
     let vres = 250;
     let xstep = 1.0/(hres as f64);
     let ystep = 1.0/(vres as f64);
@@ -70,4 +73,5 @@ fn main() {
         output.push(buff);
     }
     export_to_ppm(output, Some("Output 2".to_string()));
+    */
 }

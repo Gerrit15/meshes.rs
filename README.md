@@ -17,6 +17,7 @@ Meshes.rs is a stupid adventure into computer graphics and linear algebra
 - [ ] progress bars
 - [ ] egui, so we can have runtime stuff
 - [ ] multithread where possibile
+- [ ] Reconfig sdf so the values are stored when triangle is created
 
 ## current issues
 currently it appears that either the projection matrix is borked, the function to 
