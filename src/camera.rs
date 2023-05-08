@@ -3,33 +3,14 @@ use crate::{Vec3, ray::Ray, object::Object};
 
 pub struct Camera {
     pub location: Vec3,
-    pub direction: Vec3,
+    pub angle: Vec3,
     pub resolution: (u64, u64),
     pub pixels: Vec<Vec<Vec3>>
     //focal length?
 }
 
 impl Camera {
-    pub fn new(location: Vec3, direction: Vec3, vres: u64, hres: u64) -> Camera {
-        let z_rot = {
-            if direction.x != 0.0 {
-                f64::atan(direction.y/direction.x).to_degrees()
-            }
-            else {0.0}
-        };
-        let y_rot = {
-            if direction.x != 0.0 {
-                f64::atan(direction.z/direction.x).to_degrees()
-            }
-            else {0.0}
-        };
-        let x_rot = {
-            if direction.y != 0.0 {
-                f64::atan(direction.z/direction.y).to_degrees()
-            }
-            else {0.0}
-        };
-
+    pub fn new(location: Vec3, angle: Vec3, vres: u64, hres: u64, is_plane: bool) -> Camera {
         let mut pixels = vec![];
         let xstep = 1.0/hres as f64;
         let ystep = 1.0/vres as f64;
@@ -38,30 +19,30 @@ impl Camera {
             let mut buff = vec![];
             let mut j = 0;
             while j < hres {
-                buff.push(
-                    Vec3::new(xstep * j as f64 - 0.5, ystep * i as f64 - 0.5, 1.0)
-                    .rotate_x(x_rot)
-                    .rotate_y(y_rot)
-                    .rotate_z(z_rot)
-                    .normalize()
-                );
+                let x = xstep * j as f64 - 0.5;
+                let y = ystep * i as f64 - 0.5;
+                let z = match is_plane {
+                    true => {1.0}
+                    false => {(1.0 - (x*x) - (y*y)).sqrt()}
+                };
+                let pixel = Vec3::new(x, y, z)
+/*                    .rotate_x(angle.x)
+                    .rotate_y(angle.y)
+                    .rotate_z(angle.z);
+                println!("{pixel}")*/;
+                buff.push(pixel);
                 j += 1;
             }
             pixels.push(buff);
             i += 1;
         }
-//        for i in &pixels {
-//           for j in i {
-//               println!("Pixel: {}", j);
-//           }
-//       }
-
-        Camera {
-            location,
-            direction,
-            resolution: (vres, hres),
-            pixels
-        }
+/*        for i in &pixels {
+           for j in i {
+               println!("Pixel: {}", j);
+           }
+       }*/
+        let cam = Camera {location, angle: Vec3::new(0.0, 0.0, 0.0), resolution: (vres, hres), pixels}.rotate_x(angle.x).rotate_y(angle.y).rotate_z(angle.z);
+        return cam
     }
     pub fn render(&self, scene: &Vec<Object>, max_steps: u64, _rays_per_pixel: u32) -> Vec<Vec<Vec3>> {
         let mut output = vec![];
@@ -70,15 +51,17 @@ impl Camera {
             for j in i {
                 let ray = Ray::new(self.location, *j);
                 let cast_ray = ray.cast(scene, max_steps);
-                buff.push(match cast_ray.0 {
-                    Some(_) => {
-                        println!("Hit");
-                        Vec3::new(255.0, 255.0, 255.0)
-                    },
-                    _ => {
-                        Vec3::new(0.0, 0.0, 255.0)
+                buff.push(
+                    match cast_ray.0 {
+                        Some(_) => {
+//                            println!("Hit");
+                            Vec3::new(255.0, 255.0, 255.0)
+                        },
+                        _ => {
+                            Vec3::new(0.0, 0.0, 0.0)
+                        }
                     }
-                });
+                );
             }
             output.push(buff)
         }
@@ -86,7 +69,7 @@ impl Camera {
     }
 
     pub fn rotate_x(&self, theta: f64) -> Camera {
-        let direction = self.direction.rotate_x(theta);
+        let angle = self.angle + (theta, 0.0, 0.0);
         let mut pixels = vec![];
         for i in &self.pixels {
             let mut buff = vec![];
@@ -95,10 +78,10 @@ impl Camera {
             }
             pixels.push(buff);
         }
-        Camera { location: self.location, direction, resolution: self.resolution, pixels }
+        Camera { location: self.location, angle, resolution: self.resolution, pixels }
     }
     pub fn rotate_y(&self, theta: f64) -> Camera {
-        let direction = self.direction.rotate_y(theta);
+        let angle = self.angle + (0.0, theta, 0.0);
         let mut pixels = vec![];
         for i in &self.pixels {
             let mut buff = vec![];
@@ -107,10 +90,10 @@ impl Camera {
             }
             pixels.push(buff);
         }
-        Camera { location: self.location, direction, resolution: self.resolution, pixels }
+        Camera { location: self.location, angle, resolution: self.resolution, pixels }
     }
     pub fn rotate_z(&self, theta: f64) -> Camera {
-        let direction = self.direction.rotate_z(theta);
+        let angle = self.angle + (0.0, 0.0, theta);
         let mut pixels = vec![];
         for i in &self.pixels {
             let mut buff = vec![];
@@ -119,7 +102,7 @@ impl Camera {
             }
             pixels.push(buff);
         }
-        Camera { location: self.location, direction, resolution: self.resolution, pixels }
+        Camera { location: self.location, angle, resolution: self.resolution, pixels }
     }
     //impl focal dist (a final multiplier on the pixel vec<vec<>>)
     //impl addition, subtraction, etc

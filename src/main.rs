@@ -5,61 +5,25 @@ mod object;
 mod ray;
 mod camera;
 mod writer;
-use ray::Ray;
+//use ray::Ray;
 use vector3::Vec3;
 use triangle::Triangle;
 use object::Object;
 use writer::export_to_ppm;
-//use camera::Camera;
+use camera::Camera;
 
 fn main() {
     let scene = vec![
-/*        Object::new_triangle(
+        Object::new_triangle(
             Vec3::new(10.0, 0.0, 0.0), 
             Vec3::new(-10.0, 0.0, 0.0), 
             Vec3::new(0.0, -10.0, 0.0), 
-            Some(Vec3::new(0.0, 0.0, -50.0))
-        )*/
-        Object::new_rect(10.0, 10.0, 10.0, Some(Vec3::new(0.0, 0.0, -50.0)), None).rotate_x(45.0)
+            Some(Vec3::new(0.0, 0.0, -25.0))
+        )
+//        Object::new_rect(10.0, 10.0, 10.0, Some(Vec3::new(0.0, 0.0, -50.0)), None).rotate_x(45.0)
     ];
-    let hres = 1000;
-    let vres = 1000;
-    let xstep = 1.0/(hres as f64);
-    let ystep = 1.0/(vres as f64);
-
-    let mut projection_matrix = vec![];
-    let mut i = 0;
-    while i < vres{
-        let mut buff = vec![];
-        let mut j = 0;
-        while j < hres {
-            let x = xstep * j as f64 - 0.5;
-            let y = ystep * i as f64 - 0.5;
-            let z = (1.0 - (x*x) - (y*y)).sqrt() * -1.0;
-            buff.push(Vec3::new(x, y, z));
-            j += 1;
-        }
-        i += 1;
-        projection_matrix.push(buff);
-    }
-   let mut output = vec![];
-
-    for i in projection_matrix {
-        let mut buff = vec![];
-        for j in i {
-            let ray = Ray::new(Vec3::new(0.0, 0.0, 0.0), j);
-            let cast_ray = ray.cast(&scene, 10);
-            match cast_ray.0 {
-                Some(_) => {
-                    buff.push(Vec3::new(255.0, 255.0, 255.0))
-                },
-                None => {
-                    buff.push(Vec3::new(0.0, 0.0, 0.0))
-                }
-            }
-        }
-        output.push(buff);
-    }
-    export_to_ppm(output, Some("testing rectangle".to_string()));
+    let cam = Camera::new(Vec3::new(0.0, 0.0, 0.0), Vec3::new(0.0, 180.0, 0.0), 250, 250, true);
+    let output = cam.render(&scene, 10, 1);
+    export_to_ppm(output, Some("Cam test".to_string()));
     
 }
