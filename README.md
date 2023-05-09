@@ -2,22 +2,15 @@
 Meshes.rs is a stupid adventure into computer graphics and linear algebra
 
 ## todo
-- [x] create vector3 struct 
-- [x] create triangle struct
-- [x] create object struct
-- [x] be able to transform, add, multiply, rotate, etc said structs 
-- [x] create ray struct, with raymarching
-- [x] output to ppm
-- [ ] color, whether in the form of vec3 methods or unique structs
-- [ ] refactor many parts into traits, such as rotation
+- [ ] Turn the object struct into a few enums to have more efficient sdf
 - [ ] generate all primitaves with object struct (currently only rect and tetrahedron)
-- [ ] impl addition, subtraction, etc for object
 - [ ] make way to convert point cloud to convex hull
 - [ ] make a way to import .obj files
 - [ ] progress bars
 - [ ] egui, so we can have runtime stuff
 - [ ] multithread where possibile
 - [ ] Reconfig sdf so the values are stored when triangle is created
+- [ ] Cry about graphics processing speed without a graphics card
 
 ## current issues
 currently it appears that either the projection matrix is borked, the function to 
