@@ -28,7 +28,6 @@ impl Ray {
             let mut r = scene[0].faces[0].sdf(self.location, scene[0].origin);
             while i < scene.len() {
                 for f in &scene[i].faces {
-//                    let dist = self.distance_to_face(f, scene[i].origin);
                     let dist = f.sdf(self.location, scene[i].origin);
                     if dist < r {r = dist}
                 }

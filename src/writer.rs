@@ -18,6 +18,8 @@ P3           # "P3" means this is a RGB color image in ASCII
 */
 
 pub fn export_to_ppm(pixels: Vec<Vec<Vec3>>, name: Option<String>) {
+    let vrez = pixels.len();
+    let hrez = pixels[0].len();
     let header = "P3\n".to_owned() + &pixels[0].len().to_string() + " " + &pixels.len().to_string() + "\n" + "255\n"; 
     let mut output_pixels = vec![];
     for i in pixels {
