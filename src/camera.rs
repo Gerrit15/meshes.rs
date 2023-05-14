@@ -26,10 +26,10 @@ impl Camera {
                     false => {(1.0 - (x*x) - (y*y)).sqrt()}
                 };
                 let pixel = Vec3::new(x, y, z)
-/*                    .rotate_x(angle.x)
+                    .rotate_x(angle.x)
                     .rotate_y(angle.y)
                     .rotate_z(angle.z);
-                println!("{pixel}")*/;
+//                println!("{pixel}");
                 buff.push(pixel);
                 j += 1;
             }
@@ -54,11 +54,10 @@ impl Camera {
                 buff.push(
                     match cast_ray.0 {
                         Some(_) => {
-//                            println!("Hit");
                             Vec3::new(255.0, 255.0, 255.0)
                         },
                         _ => {
-                            Vec3::new(255.0/2.0, 0.0, 255.0/2.0)
+                            Vec3::new(0.0, 0.0, 0.0)
                         }
                     }
                 );
