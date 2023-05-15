@@ -2,15 +2,15 @@
 Meshes.rs is a stupid adventure into computer graphics and linear algebra
 
 ## todo
+- [ ] Fix whatever issue in the triangle SDF is causing issues, probably vertex at 0.0, 0.0, 0.0?
+- [ ] Fix whatever is going on with more complicated object rendering
 - [ ] Turn the object struct into a few enums to have more efficient sdf
 - [ ] generate all primitaves with object struct (currently only rect and tetrahedron)
 - [ ] make way to convert point cloud to convex hull
 - [ ] make a way to import .obj files
 - [ ] progress bars
-- [ ] egui, so we can have runtime stuff
-- [ ] multithread where possibile
-- [ ] Reconfig sdf so the values are stored when triangle is created
-- [ ] Cry about graphics processing speed without a graphics card
+- [ ] egui, so we can have runtime stuff (dream is being able to watch rendering process "realtime")
+- [ ] multithread properly (without, uh, memory leaks??)
 
 ## current issues
 currently it appears that either the projection matrix is borked, the function to 
