@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+use std::{sync::{Arc, Mutex}, thread};
+
 use crate::{Vec3, ray::Ray, object::Object};
 
 pub struct Camera {
@@ -44,25 +46,56 @@ impl Camera {
         let cam = Camera {location, angle: Vec3::new(0.0, 0.0, 0.0), resolution: (vres, hres), pixels}.rotate_x(angle.x).rotate_y(angle.y).rotate_z(angle.z);
         return cam
     }
-    pub fn render(&self, scene: &Vec<Object>, max_steps: u64, _rays_per_pixel: u32) -> Vec<Vec<Vec3>> {
-        let mut output = vec![];
+    pub fn render(&self, scene: Arc<Vec<Object>>, max_steps: u64, _rays_per_pixel: u32) -> Vec<Vec<Vec3>> {
+/*        let mut output = vec![];
         for i in &self.pixels {
             let mut buff = vec![];
             for j in i {
                 let ray = Ray::new(self.location, *j);
-                let cast_ray = ray.cast(scene, max_steps);
+                let cast_ray = ray.cast(Arc::clone(&scene), max_steps);
                 buff.push(
                     match cast_ray.0 {
                         Some(_) => {
+                            println!("hit!");
                             Vec3::new(255.0, 255.0, 255.0)
                         },
                         _ => {
+                            println!("miss :(");
                             Vec3::new(0.0, 0.0, 0.0)
                         }
                     }
                 );
             }
             output.push(buff)
+        }
+        output*/
+        let pixel_stack: Arc<Mutex<Vec<(usize, usize, Vec3)>>> = Arc::new(Mutex::new(vec![]));
+        let mut handles = vec![];
+        for i in 0..self.pixels.len() {
+            let y = i.clone();
+            for j in 0..self.pixels[i].len() {
+                let x = j.clone();
+                let max_steps = max_steps.clone();
+                let ray = Ray::new(self.location, *&self.pixels[y][x]);
+                let scene_clone = Arc::clone(&scene);
+                let stack_clone = Arc::clone(&pixel_stack);
+
+                let handle = thread::spawn(move || {
+                    let cast_ray = ray.cast(scene_clone, max_steps.clone());
+                    let color = match cast_ray.0 {
+                        Some(_) => Vec3::new(255.0, 255.0, 255.0),
+                        None => Vec3::new(0.0, 0.0, 0.0)
+                    };
+                    stack_clone.lock().unwrap().push((x, y, color))
+                });
+
+                handles.push(handle);
+            }
+        }
+        for handle in handles {handle.join().unwrap()}
+        let mut output = vec![vec![Vec3::new(0.0, 0.0, 0.0); self.pixels[0].len()]; self.pixels.len()];
+        for i in &*pixel_stack.lock().unwrap() {
+            output[i.0][i.1] = i.2;
         }
         output
     }

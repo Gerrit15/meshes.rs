@@ -1,4 +1,5 @@
 use crate::{Vec3, Object, Triangle};
+use std::sync::Arc;
 
 #[derive(Clone, Copy)]
 pub struct Ray {
@@ -20,7 +21,7 @@ impl Ray {
         }
     }
 
-    pub fn cast(mut self, scene: &Vec<Object>, max_steps: u64) -> (Option<(Object, usize)>, Ray){
+    pub fn cast(mut self, scene: Arc<Vec<Object>>, max_steps: u64) -> (Option<(Object, usize)>, Ray){
         loop {
             //set up this way because I'm not sure if I want to return an index or an object
             //so for now, both
