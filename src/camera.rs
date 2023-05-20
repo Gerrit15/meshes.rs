@@ -83,8 +83,12 @@ impl Camera {
                 let handle = thread::spawn(move || {
                     let cast_ray = ray.cast(scene_clone, max_steps.clone());
                     let color = match cast_ray.0 {
-                        Some(_) => Vec3::new(255.0, 255.0, 255.0),
-                        None => Vec3::new(0.0, 0.0, 0.0)
+                        Some(_) => {
+                            Vec3::new(255.0, 255.0, 255.0)
+                        },
+                        None => {
+                            Vec3::new(0.0, 0.0, 0.0)
+                        }
                     };
                     stack_clone.lock().unwrap().push((x, y, color))
                 });
