@@ -91,10 +91,7 @@ impl Triangle {
         else {return ((self.normal*pa)*(self.normal*pa)*(self.normal*self.normal)).sqrt()} 
     }
     fn sign(a: f64) -> f64 {
-        let a = a.round();
-        if a >= 0.001 {1.0}
-        else if a <= -0.001 {-1.0}
-        else {0.0}
+        a.signum()
     }
     fn minimum(a: f64, b: f64, c:f64) -> f64 {
         let out = {
