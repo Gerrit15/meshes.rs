@@ -80,7 +80,7 @@ impl Camera {
                 let scene_clone = Arc::clone(&scene);
                 let stack_clone = Arc::clone(&pixel_stack);
 
-                let handle = thread::spawn(move || {
+                handles.push(thread::spawn(move || {
                     let cast_ray = ray.cast(scene_clone, max_steps.clone());
                     let color = match cast_ray.0 {
                         Some(_) => {
@@ -91,9 +91,7 @@ impl Camera {
                         }
                     };
                     stack_clone.lock().unwrap().push((x, y, color))
-                });
-
-                handles.push(handle);
+                }));
             }
         }
         for handle in handles {handle.join().unwrap()}
