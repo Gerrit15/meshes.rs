@@ -26,7 +26,7 @@ fn main() {
     let cam = Camera::new(Vec3::new(0.0, 0.0, 0.0), Vec3::new(90.0, 00.0, 00.0), 250, 250, false);
     let output = cam.render(Arc::new(scene), 25, 1);
     export_to_ppm(output, Some("multithread_test2".to_string()));
-    println!("Exported");
+    println!("Exported")
 
 /*    let num_threads = available_parallelism().unwrap().get();
     println!("{num_threads}");*/
